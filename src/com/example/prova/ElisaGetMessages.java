@@ -22,7 +22,7 @@ public class ElisaGetMessages extends AsyncTask<Double, Integer, String>
 	
 	protected void onPostExecute(String res)
 	{
-		if(res=="false"){
+		if(res.equals("false")){
 			//do nothing -- empty results
 			//TODO: maybe some clear all?
 			System.out.println("[DEBUG]: No messages found.");

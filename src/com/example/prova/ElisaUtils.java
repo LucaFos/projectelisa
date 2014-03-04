@@ -14,6 +14,6 @@ public class ElisaUtils {
 		in = in.replaceAll(new String("<!-- Hosting24 Analytics Code -->"), new String(""));
 		in = in.replaceAll(new String("<script type=\"text/javascript\" src=\"http://stats.hosting24.com/count.php\"></script>"), new String(""));
 		in = in.replaceAll(new String("<!-- End Of Analytics Code -->"), new String(""));
-		return in.replaceAll("[\r\n]", "");
+		return in.replaceAll("[\r\n]+", "");
 	}
 }
