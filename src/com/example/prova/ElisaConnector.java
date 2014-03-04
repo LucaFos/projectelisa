@@ -16,7 +16,7 @@ public class ElisaConnector {
 		target = t;
 	}
 	
-	public void spawnGet(double x, double y, double z)
+	public void getMessages(double x, double y, double z)
 	{
 		ElisaGetMessages e = new ElisaGetMessages();
 		e.setTarget(target);

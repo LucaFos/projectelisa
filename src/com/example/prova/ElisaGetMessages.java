@@ -8,6 +8,9 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import android.os.AsyncTask;
 
 public class ElisaGetMessages extends AsyncTask<Double, Integer, String>
@@ -27,7 +30,14 @@ public class ElisaGetMessages extends AsyncTask<Double, Integer, String>
 			//TODO: maybe some clear all?
 			System.out.println("[DEBUG]: No messages found.");
 		} else {
-			System.out.println(res);
+			//TODO: parse json in order to get message list
+			try {
+				JSONArray jarr = new JSONArray(res);
+				System.out.println(jarr.toString());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -47,19 +57,13 @@ public class ElisaGetMessages extends AsyncTask<Double, Integer, String>
 	    HttpURLConnection conn = null;
 		try {
 			conn = (HttpURLConnection) url.openConnection();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	    try {
 			conn.setRequestMethod("GET");
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-		}
 
-	    try {
 	    	InputStream in = new BufferedInputStream(conn.getInputStream());
 	        response = ElisaUtils.convertStreamToString(in);
+	        
+		} catch (ProtocolException e) {
+				e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

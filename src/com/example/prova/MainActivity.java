@@ -67,8 +67,7 @@ public class MainActivity extends Activity {
 		double altitude = location.getAltitude();
 		double longitude = location.getLongitude();
 		
-		e.spawnGet(latitude, longitude, altitude);
-		
+		e.getMessages(latitude, longitude, altitude);
 	}
     
 }
