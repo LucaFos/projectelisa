@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class MainActivity extends Activity {
 	
@@ -34,6 +36,27 @@ public class MainActivity extends Activity {
 		});
 		
 		startPositioning();
+		
+		SeekBar skb = (SeekBar) findViewById(R.id.seekBar1);
+		skb.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			@Override
+			public void onStopTrackingTouch (SeekBar s) {
+				double factor = (s.getProgress()+1)/1000000.0;
+				System.out.println(factor);
+			}
+
+			@Override
+			public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
     }
 
 
