@@ -24,6 +24,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     	
+        startPositioning();
+        
     	Button btn = (Button) findViewById(R.id.button1);
 		btn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -35,14 +37,12 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-		startPositioning();
-		
 		SeekBar skb = (SeekBar) findViewById(R.id.seekBar1);
 		skb.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch (SeekBar s) {
 				double factor = (s.getProgress()+1)/1000000.0;
-				System.out.println(factor);
+				e.setFactor(factor);
 			}
 
 			@Override
@@ -107,7 +107,7 @@ public class MainActivity extends Activity {
 		
 		ElisaPositioning.setPos(latitude, longitude, altitude);
 		
-		//e.getMessages();
+		e.getMessages();
 		//e.postMessage("viva la bamba");
 		
 	}

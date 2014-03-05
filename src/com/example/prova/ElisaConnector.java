@@ -8,10 +8,16 @@ import java.net.URLEncoder;
 public class ElisaConnector {
 	//internals
 	String target;
+	double factor;
 	
 	ElisaConnector(String t)
 	{
 		target = t;
+	}
+	
+	public void setFactor(double f)
+	{
+		factor = f;
 	}
 	
 	public void setTarget(String t)
@@ -24,6 +30,7 @@ public class ElisaConnector {
 		ElisaGetMessages e = new ElisaGetMessages();
 		//executing
 		e.setTarget(target);
+		e.setFactor(factor);
 		e.execute();
 	}
 	

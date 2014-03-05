@@ -20,6 +20,12 @@ public class ElisaGetMessages extends AsyncTask<Void, Integer, String>
 {
 	String target = null;
 	String response = null;
+	double factor = 0.00004;
+	
+	public void setFactor(double f)
+	{
+		factor = f;
+	}
 	
 	public void setTarget(String t)
 	{
@@ -36,6 +42,10 @@ public class ElisaGetMessages extends AsyncTask<Void, Integer, String>
 			//TODO: parse json in order to get message list
 			try {
 				JSONArray jarr = new JSONArray(res);
+				
+				//TODO: remove me asap!!
+				System.out.println(jarr.toString());
+				
 				List<ElisaMessage> messages = new ArrayList<ElisaMessage>();
 				
 				for (int i = 0; i < jarr.length(); i++) {
@@ -65,7 +75,7 @@ public class ElisaGetMessages extends AsyncTask<Void, Integer, String>
 		
 	    URL url = null;
 		try {
-			url = new URL("http://" + target + "/main/get/?x="+String.valueOf(x)+"&y="+String.valueOf(y)+"&z="+String.valueOf(z)+"&f=0.00004");
+			url = new URL("http://" + target + "/main/get/?x="+String.valueOf(x)+"&y="+String.valueOf(y)+"&z="+String.valueOf(z)+"&f="+String.valueOf(factor));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
