@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
 		ElisaPositioning.setPos(latitude, longitude, altitude);
 		
 		//e.getMessages();
-		e.postMessage("viva la bamba");
+		//e.postMessage("viva la bamba");
 		
 	}
     
