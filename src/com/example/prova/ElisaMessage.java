@@ -3,17 +3,17 @@ package com.example.prova;
 public class ElisaMessage {
 	String m_body;
 	int m_owner;
-	int m_x, m_y, m_z; //latitude, longitude, altitude
+	double m_x, m_y, m_z; //latitude, longitude, altitude
 	
 	/*
 	 * Creates a good elisa message object setting all params
 	 */
-	ElisaMessage(String body, int x, int y, int z, int owner)
+	ElisaMessage(String body, double latitude, double longitude, double altitude, int owner)
 	{
 		m_owner = owner;
-		m_x = x;
-		m_y = y;
-		m_z = z;
+		m_x = latitude;
+		m_y = longitude;
+		m_z = altitude;
 		
 		m_body = body;
 	}
@@ -53,17 +53,17 @@ public class ElisaMessage {
 		m_z = z;
 	}
 	
-	public int getLatitude()
+	public double getLatitude()
 	{
 		return m_x;
 	}
 	
-	public int getLongitude()
+	public double getLongitude()
 	{
 		return m_y;
 	}
 	
-	public int getAltitude()
+	public double getAltitude()
 	{
 		return m_z;
 	}

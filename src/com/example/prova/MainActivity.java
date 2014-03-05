@@ -27,9 +27,13 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				EditText edittext = (EditText) findViewById(R.id.editText1);
-				System.out.println (edittext.getText().toString());
+				String message = edittext.getText().toString();
+				System.out.println("sending message: "+message);
+				e.postMessage(message);
 			}
 		});
+		
+		startPositioning();
     }
 
 
@@ -40,7 +44,7 @@ public class MainActivity extends Activity {
         return true;
     }
     
-    public void sendMessage(View view) {
+    public void startPositioning() {
         // Do something in response to button
     	LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
     	boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -78,7 +82,11 @@ public class MainActivity extends Activity {
 		double altitude = location.getAltitude();
 		double longitude = location.getLongitude();
 		
-		e.getMessages(latitude, longitude, altitude);
+		ElisaPositioning.setPos(latitude, longitude, altitude);
+		
+		//e.getMessages();
+		e.postMessage("viva la bamba");
+		
 	}
     
 }

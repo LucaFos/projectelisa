@@ -1,11 +1,13 @@
 
 package com.example.prova;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 
 public class ElisaConnector {
+	//internals
 	String target;
-	
-	ElisaGetMessages[] gets;
 	
 	ElisaConnector(String t)
 	{
@@ -17,11 +19,26 @@ public class ElisaConnector {
 		target = t;
 	}
 	
-	public void getMessages(double x, double y, double z)
+	public void getMessages()
 	{
 		ElisaGetMessages e = new ElisaGetMessages();
+		//executing
 		e.setTarget(target);
-		e.execute(x, y, z);
+		e.execute();
+	}
+	
+	public void postMessage(String message)
+	{
+		try {
+			ElisaPostMessage e = new ElisaPostMessage();
+			//executing
+			e.setTarget(target);
+			e.setParameters("body="+URLEncoder.encode(message, "UTF-8"));
+			e.execute();
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 	
 }
