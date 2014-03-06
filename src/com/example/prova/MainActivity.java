@@ -32,8 +32,11 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				EditText edittext = (EditText) findViewById(R.id.editText1);
 				String message = edittext.getText().toString();
-				System.out.println("sending message: "+message);
-				e.postMessage(message);
+				if (message.length() != 0) {
+					System.out.println("sending message: "+message);
+					e.postMessage(message);
+					edittext.setText("");
+				}
 			}
 		});
 		
