@@ -74,12 +74,10 @@ public class ElisaGetMessages extends AsyncTask<Void, Integer, String>
 	
 	@Override
 	protected String doInBackground(Void...coords) 
-	{
-		double[] pos = ElisaPositioning.getPos();
-		
-		double x = pos[0];
-		double y = pos[1];
-		double z = pos[2];
+	{	
+		double x = ElisaPositioning.getLatitude();
+		double y = ElisaPositioning.getLongitude();
+		double z = ElisaPositioning.getAltitude();
 		
 	    URL url = null;
 		try {

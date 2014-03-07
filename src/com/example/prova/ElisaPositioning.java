@@ -6,6 +6,10 @@ import android.location.Location;
 
 public class ElisaPositioning {
 	
+	public static double opt_latitude = 0;
+	public static double opt_longitude = 0;
+	public static double opt_altitude = 0;
+	
 	public static double net_latitude = 0;
 	public static double net_longitude = 0;
 	public static double net_altitude = 0;
@@ -17,8 +21,15 @@ public class ElisaPositioning {
 	private static long net_time = 0;
 	private static long gps_time = 0;
 	
+	/*
+	 * 1: NETWORK
+	 * 2: GPS
+	 */
+	public static int status = 1;
+	
 	public static void setNetPos(Location location)
 	{
+		System.out.println("updated net pos...");
 		ElisaPositioning.net_latitude = location.getLatitude();
 		ElisaPositioning.net_longitude = location.getLongitude();
 		ElisaPositioning.net_altitude = location.getAltitude();
@@ -29,53 +40,75 @@ public class ElisaPositioning {
 	
 	public static void setGpsPos(Location location)
 	{	
+		System.out.println("updated gps pos...");
 		ElisaPositioning.gps_latitude = location.getLatitude();
 		ElisaPositioning.gps_longitude = location.getLongitude();
-		ElisaPositioning.gps_altitude = location.getAltitude();
+		ElisaPositioning.gps_altitude = 0;
+		
+		//TODO: altitude needs to be fixed with gps active, really critical
+		//		keeping  for compatibility with NETWORK_PROVIDER
 		
 		Date date = new Date();
 	    ElisaPositioning.gps_time = date.getTime();
+	    
+	    System.out.println("("+String.valueOf(ElisaPositioning.gps_latitude)+","+String.valueOf(ElisaPositioning.gps_longitude)+","+String.valueOf(ElisaPositioning.gps_altitude)+")");
 	}
 	
-	public static double[] getPos()
+	public static void updatePos()
 	{
-		double[] res = new double[2];
+		Date date = new Date();
+	    long time = date.getTime();
+		
 		//TODO: interpolate wifi/cell with gps
 		
 		// yes / yes
 		if(gps_time!=0 && net_time!=0){
-			if(gps_time<30){
-				res[0] = gps_latitude;
-				res[1] = gps_longitude;
-				res[2] = gps_altitude;
+			if(time-gps_time<30){
+				ElisaPositioning.opt_latitude = gps_latitude;
+				ElisaPositioning.opt_longitude = gps_longitude;
+				ElisaPositioning.opt_altitude = gps_altitude;
 			} else {
-				res[0] = net_latitude;
-				res[1] = net_longitude;
-				res[2] = net_altitude;
+				ElisaPositioning.opt_latitude = net_latitude;
+				ElisaPositioning.opt_longitude = net_longitude;
+				ElisaPositioning.opt_altitude = net_altitude;
 			}
 		}
 		
 		// no  / yes
 		if(gps_time==0 && net_time!=0){
-			res[0] = net_latitude;
-			res[1] = net_longitude;
-			res[2] = net_altitude;
+			ElisaPositioning.opt_latitude = net_latitude;
+			ElisaPositioning.opt_longitude = net_longitude;
+			ElisaPositioning.opt_altitude = net_altitude;
 		}
 		
 		// yes / no
 		if(gps_time!=0 && net_time==0){
-			res[0] = gps_latitude;
-			res[1] = gps_longitude;
-			res[2] = gps_altitude;
+			ElisaPositioning.opt_latitude = gps_latitude;
+			ElisaPositioning.opt_longitude = gps_longitude;
+			ElisaPositioning.opt_altitude = gps_altitude;
 		}
 		
 		// no  / no
 		if(gps_time==0 && net_time==0){
-			res[0] = 0;
-			res[1] = 0;
-			res[2] = 0;
+			ElisaPositioning.opt_latitude = 0;
+			ElisaPositioning.opt_longitude = 0;
+			ElisaPositioning.opt_altitude = 0;
 		}
-		return res;
+	}
+	
+	public static double getLatitude()
+	{
+		return ElisaPositioning.opt_latitude;
+	}
+	
+	public static double getLongitude()
+	{
+		return ElisaPositioning.opt_longitude;
+	}
+	
+	public static double getAltitude()
+	{
+		return ElisaPositioning.opt_altitude;
 	}
 	
 }

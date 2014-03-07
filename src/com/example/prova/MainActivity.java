@@ -1,5 +1,8 @@
 package com.example.prova;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
@@ -24,6 +27,24 @@ public class MainActivity extends Activity {
 	TabHost tabHost;
 	
 	ElisaConnector e = new ElisaConnector(new String("projectelisa.host56.com"));
+	
+	class RefreshMessagesTask extends TimerTask {
+		public void run() {
+			//stuff executed every 5 seconds
+			System.out.println("[DEBUG]: executing task...");
+			e.getMessages();
+			
+			//this has to be done because only the original thread that
+			//created a view hierarchy can touch its views.
+			runOnUiThread(new Runnable(){
+	              @Override
+	              public void run(){
+	            	  refreshMessages();
+	              }
+	           });
+			
+		}
+	}
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +85,14 @@ public class MainActivity extends Activity {
 		skb.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch (SeekBar s) {
-				double factor = (s.getProgress()+1)/1000000.0;
+				double factor = 0.0;
+				
+				if(ElisaPositioning.status==2){
+					factor = 10000000.0;
+				} else {
+					factor = 100000.0;
+				}
+				
 				e.setFactor(factor);
 			}
 
@@ -80,6 +108,11 @@ public class MainActivity extends Activity {
 				
 			}
 		});
+		
+		RefreshMessagesTask myTask = new RefreshMessagesTask();
+        Timer myTimer = new Timer();
+ 
+        myTimer.schedule(myTask, 1000, 5000);
 		
     }
 
@@ -102,19 +135,19 @@ public class MainActivity extends Activity {
     
     public void refreshMessages()
     {	
-    	LinearLayout ll = (LinearLayout) findViewById(R.id.messageLinearLayout);
-    	
-    	cleanMessages();
-    	
-    	for(int i=0; i<ElisaConnector.last_messages.size();i++){
-    		TextView t = (TextView)getLayoutInflater().inflate(R.layout.message_layout, null);
-        	t.setText(ElisaConnector.last_messages.get(i).getBody());
-        	
-        	TextView divisor = (TextView)getLayoutInflater().inflate(R.layout.divisor_layout, null);
-        	
-        	ll.addView(t);
-        	ll.addView(divisor);
-    	}
+		LinearLayout ll = (LinearLayout) findViewById(R.id.messageLinearLayout);
+		        
+        cleanMessages();
+        
+        for(int i=0; i<ElisaConnector.last_messages.size();i++){
+                TextView t = (TextView)getLayoutInflater().inflate(R.layout.message_layout, null);
+                t.setText(ElisaConnector.last_messages.get(i).getBody());
+                
+                TextView divisor = (TextView)getLayoutInflater().inflate(R.layout.divisor_layout, null);
+                
+                ll.addView(t);
+                ll.addView(divisor);
+        }
     }
     
     public void startPositioning() {
