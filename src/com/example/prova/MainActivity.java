@@ -9,6 +9,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.View;
@@ -28,20 +30,24 @@ public class MainActivity extends Activity {
 	
 	ElisaConnector e = new ElisaConnector(new String("projectelisa.host56.com"));
 	
+	public static Handler mainHandler;
+	
 	class RefreshMessagesTask extends TimerTask {
 		public void run() {
 			//stuff executed every 5 seconds
 			System.out.println("[DEBUG]: executing task...");
 			e.getMessages();
 			
+			/*
 			//this has to be done because only the original thread that
 			//created a view hierarchy can touch its views.
 			runOnUiThread(new Runnable(){
 	              @Override
 	              public void run(){
-	            	  refreshMessages();
+	            	  //refreshMessages();
 	              }
 	           });
+	        */
 			
 		}
 	}
@@ -64,6 +70,17 @@ public class MainActivity extends Activity {
         
         tabHost.addTab(spec1);
         tabHost.addTab(spec2);
+        
+        mainHandler = new Handler() {
+            @Override
+            public void handleMessage (Message msg) {
+            	//TODO: differentiate between messages
+            	System.out.println("message received?");
+                refreshMessages();
+            }
+        };
+        
+        e.setHandler(mainHandler);
         
         startPositioning();
         

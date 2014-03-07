@@ -14,12 +14,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
+import android.os.Handler;
 
 public class ElisaGetMessages extends AsyncTask<Void, Integer, String>
 {
 	String target = null;
 	String response = null;
 	double factor = 0.00004;
+	Handler handler = null;
+	
+	public void setHandler(Handler h)
+	{
+		handler = h;
+	}
 	
 	public void setFactor(double f)
 	{
@@ -40,6 +47,9 @@ public class ElisaGetMessages extends AsyncTask<Void, Integer, String>
 				System.out.println("[DEBUG]: No messages found.");
 				ArrayList<ElisaMessage> messages = new ArrayList<ElisaMessage>();
 				ElisaConnector.last_messages = messages;
+				
+				//sending message to MainActivity
+				handler.sendEmptyMessage(0);
 			} else {
 				//TODO: parse json in order to get message list
 				try {
@@ -61,6 +71,7 @@ public class ElisaGetMessages extends AsyncTask<Void, Integer, String>
 					
 					if(messages.size()>0){
 						ElisaConnector.last_messages = messages;
+						handler.sendEmptyMessage(0);
 					} else {
 						System.out.println("[DEBUG]: server issue... retrying in a few seconds");
 					}

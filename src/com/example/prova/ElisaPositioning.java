@@ -27,6 +27,8 @@ public class ElisaPositioning {
 	 */
 	public static int status = 1;
 	
+	public static enum Connection {GPS,NET};
+	
 	public static void setNetPos(Location location)
 	{
 		System.out.println("updated net pos...");
@@ -63,14 +65,18 @@ public class ElisaPositioning {
 		
 		// yes / yes
 		if(gps_time!=0 && net_time!=0){
-			if(time-gps_time<30){
+			if(time-gps_time<15){
 				ElisaPositioning.opt_latitude = gps_latitude;
 				ElisaPositioning.opt_longitude = gps_longitude;
 				ElisaPositioning.opt_altitude = gps_altitude;
+				
+				ElisaPositioning.status = 2;
 			} else {
 				ElisaPositioning.opt_latitude = net_latitude;
 				ElisaPositioning.opt_longitude = net_longitude;
 				ElisaPositioning.opt_altitude = net_altitude;
+				
+				ElisaPositioning.status = 1;
 			}
 		}
 		
@@ -79,6 +85,8 @@ public class ElisaPositioning {
 			ElisaPositioning.opt_latitude = net_latitude;
 			ElisaPositioning.opt_longitude = net_longitude;
 			ElisaPositioning.opt_altitude = net_altitude;
+			
+			ElisaPositioning.status = 1;
 		}
 		
 		// yes / no
@@ -86,6 +94,8 @@ public class ElisaPositioning {
 			ElisaPositioning.opt_latitude = gps_latitude;
 			ElisaPositioning.opt_longitude = gps_longitude;
 			ElisaPositioning.opt_altitude = gps_altitude;
+			
+			ElisaPositioning.status = 2;
 		}
 		
 		// no  / no
@@ -93,6 +103,8 @@ public class ElisaPositioning {
 			ElisaPositioning.opt_latitude = 0;
 			ElisaPositioning.opt_longitude = 0;
 			ElisaPositioning.opt_altitude = 0;
+			
+			ElisaPositioning.status = 1;
 		}
 	}
 	

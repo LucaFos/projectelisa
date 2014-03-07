@@ -5,17 +5,25 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import android.os.Handler;
+
 
 public class ElisaConnector {
 	//internals
 	String target;
 	double factor;
+	private Handler handler;
 	
 	public static ArrayList<ElisaMessage> last_messages = new ArrayList<ElisaMessage>();
 	
 	ElisaConnector(String t)
 	{
 		target = t;
+	}
+	
+	public void setHandler(Handler h)
+	{
+		handler = h;
 	}
 	
 	public void setFactor(double f)
@@ -32,6 +40,7 @@ public class ElisaConnector {
 	{
 		ElisaGetMessages e = new ElisaGetMessages();
 		//executing
+		e.setHandler(handler);
 		e.setTarget(target);
 		e.setFactor(factor);
 		e.execute();
