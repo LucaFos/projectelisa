@@ -15,9 +15,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
+import android.widget.TabHost;
 
 public class MainActivity extends Activity {
+	
+	TabHost tabHost;
 	
 	ElisaConnector e = new ElisaConnector(new String("projectelisa.host56.com"));
 	
@@ -26,6 +30,20 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     	
+        tabHost=(TabHost)findViewById(R.id.tabHost);
+        tabHost.setup();
+        
+        TabSpec spec1=tabHost.newTabSpec("TAB 1");
+        spec1.setContent(R.id.tab1);
+        spec1.setIndicator("TAB 1");
+        
+        TabSpec spec2=tabHost.newTabSpec("TAB 2");
+        spec2.setContent(R.id.tab2);
+        spec2.setIndicator("TAB 2");
+        
+        tabHost.addTab(spec1);
+        tabHost.addTab(spec2);
+        
         startPositioning();
         
     	Button btn = (Button) findViewById(R.id.button1);
