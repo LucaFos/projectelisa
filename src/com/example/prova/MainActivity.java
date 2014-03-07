@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
@@ -60,6 +62,7 @@ public class MainActivity extends Activity {
 				
 			}
 		});
+		
     }
 
 
@@ -68,6 +71,32 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+    
+    public void cleanMessages()
+    {
+    	LinearLayout ll = (LinearLayout) findViewById(R.id.messageLinearLayout);
+    	
+    	if(((LinearLayout) ll).getChildCount() > 0){ 
+    		((LinearLayout) ll).removeAllViews();
+    	}
+    }
+    
+    public void refreshMessages()
+    {	
+    	LinearLayout ll = (LinearLayout) findViewById(R.id.messageLinearLayout);
+    	
+    	cleanMessages();
+    	
+    	for(int i=0; i<ElisaConnector.last_messages.size();i++){
+    		TextView t = (TextView)getLayoutInflater().inflate(R.layout.message_layout, null);
+        	t.setText(ElisaConnector.last_messages.get(i).getBody());
+        	
+        	TextView divisor = (TextView)getLayoutInflater().inflate(R.layout.divisor_layout, null);
+        	
+        	ll.addView(t);
+        	ll.addView(divisor);
+    	}
     }
     
     public void startPositioning() {
@@ -84,10 +113,10 @@ public class MainActivity extends Activity {
     	}
     	
     	// Define a listener that responds to location updates
-    	LocationListener locationListener = new LocationListener() {
+    	LocationListener networkListener = new LocationListener() {
     	    public void onLocationChanged(Location location) {
     	      // Called when a new location is found by the network location provider.
-    	      makeUseOfNewLocation(location);
+    	    	ElisaPositioning.setNetPos(location);
     	    }
 
     	    public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -96,23 +125,24 @@ public class MainActivity extends Activity {
 
     	    public void onProviderDisabled(String provider) {}
     	  };
+    	
+    	// Define a listener that responds to location updates
+      	LocationListener gpsListener = new LocationListener() {
+      	    public void onLocationChanged(Location location) {
+      	      // Called when a new location is found by the network location provider.
+      	    	ElisaPositioning.setGpsPos(location);
+      	    }
 
+      	    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+      	    public void onProviderEnabled(String provider) {}
+
+      	    public void onProviderDisabled(String provider) {}
+      	  };
+    	  
     	// Register the listener with the Location Manager to receive location updates
-    	service.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+    	service.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, networkListener);
+    	service.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
     }
-
-
-	protected void makeUseOfNewLocation(Location location) {
-		// TODO Auto-generated method stub
-		double latitude = location.getLatitude();
-		double altitude = location.getAltitude();
-		double longitude = location.getLongitude();
-		
-		ElisaPositioning.setPos(latitude, longitude, altitude);
-		
-		e.getMessages();
-		//e.postMessage("viva la bamba");
-		
-	}
     
 }

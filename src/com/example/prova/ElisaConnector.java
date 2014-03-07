@@ -3,12 +3,15 @@ package com.example.prova;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 
 public class ElisaConnector {
 	//internals
 	String target;
 	double factor;
+	
+	public static ArrayList<ElisaMessage> last_messages = new ArrayList<ElisaMessage>();
 	
 	ElisaConnector(String t)
 	{

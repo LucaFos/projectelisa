@@ -39,12 +39,12 @@ public class ElisaPostMessage extends AsyncTask<Void, Integer, Integer>
 	
 	@Override
 	protected Integer doInBackground(Void... coords) 
-	{
-		System.out.println("sending http request...");
+	{	
+		double[] pos = ElisaPositioning.getPos();
 		
-		double x = ElisaPositioning.latitude;
-		double y = ElisaPositioning.longitude;
-		double z = ElisaPositioning.altitude;
+		double x = pos[0];
+		double y = pos[1];
+		double z = pos[2];
 		
 	    URL url = null;
 		try {

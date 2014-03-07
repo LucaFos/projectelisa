@@ -8,7 +8,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,34 +33,41 @@ public class ElisaGetMessages extends AsyncTask<Void, Integer, String>
 	
 	protected void onPostExecute(String res)
 	{
-		if(res.equals("false")){
-			//do nothing -- empty results
-			//TODO: maybe some clear all?
-			System.out.println("[DEBUG]: No messages found.");
-		} else {
-			//TODO: parse json in order to get message list
-			try {
-				JSONArray jarr = new JSONArray(res);
-				
-				//TODO: remove me asap!!
-				System.out.println(jarr.toString());
-				
-				List<ElisaMessage> messages = new ArrayList<ElisaMessage>();
-				
-				for (int i = 0; i < jarr.length(); i++) {
-					JSONObject obj = jarr.getJSONObject(i);
+		if(res != null){
+			if(res.equals("false")){
+				//do nothing -- empty results
+				//TODO: maybe some clear all?
+				System.out.println("[DEBUG]: No messages found.");
+				ArrayList<ElisaMessage> messages = new ArrayList<ElisaMessage>();
+				ElisaConnector.last_messages = messages;
+			} else {
+				//TODO: parse json in order to get message list
+				try {
+					JSONArray jarr = new JSONArray(res);
 					
-					String body = obj.getString("body");
-					double latitude = Double.parseDouble(obj.getString("x"));
-					double longitude = Double.parseDouble(obj.getString("y"));
-					double altitude = Double.parseDouble(obj.getString("z"));
+					ArrayList<ElisaMessage> messages = new ArrayList<ElisaMessage>();
 					
-					messages.add(new ElisaMessage(body, latitude, longitude, altitude, -1));
+					for (int i = 0; i < jarr.length(); i++) {
+						JSONObject obj = jarr.getJSONObject(i);
+						
+						String body = obj.getString("body");
+						double latitude = Double.parseDouble(obj.getString("x"));
+						double longitude = Double.parseDouble(obj.getString("y"));
+						double altitude = Double.parseDouble(obj.getString("z"));
+						
+						messages.add(new ElisaMessage(body, latitude, longitude, altitude, -1));
+					}
+					
+					
+					if(messages.size()>0){
+						ElisaConnector.last_messages = messages;
+					} else {
+						System.out.println("[DEBUG]: server issue... retrying in a few seconds");
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					System.out.println("[DEBUG]: server is probably busy... retrying in a few seconds");
 				}
-				
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 	}
@@ -69,9 +75,11 @@ public class ElisaGetMessages extends AsyncTask<Void, Integer, String>
 	@Override
 	protected String doInBackground(Void...coords) 
 	{
-		double x = ElisaPositioning.latitude;
-		double y = ElisaPositioning.longitude;
-		double z = ElisaPositioning.altitude;
+		double[] pos = ElisaPositioning.getPos();
+		
+		double x = pos[0];
+		double y = pos[1];
+		double z = pos[2];
 		
 	    URL url = null;
 		try {
