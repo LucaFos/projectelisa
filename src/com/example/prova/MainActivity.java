@@ -1,5 +1,9 @@
 package com.example.prova;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,6 +15,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -27,13 +33,15 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.TabHost;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import android.view.Window;
 import android.view.WindowManager;
 
 public class MainActivity extends Activity {
 	
-	TabHost tabHost;
+	TabHost tabHost; 
 	
 	ElisaConnector e = new ElisaConnector(new String("projectelisa.host56.com"));
 	
@@ -118,9 +126,9 @@ public class MainActivity extends Activity {
 				double factor = 0.0;
 				
 				if(ElisaPositioning.status==2){
-					factor = 10000000.0;
+					factor = 0.0000001;
 				} else {
-					factor = 100000.0;
+					factor = 0.0001;
 				}
 				
 				System.out.println("factor is: "+String.valueOf(factor));
@@ -154,6 +162,7 @@ public class MainActivity extends Activity {
 		@Override
           public void call(Session session, SessionState state, Exception exception) {
         	  if (session.isOpened()) {
+        		  
         		  // make request to the /me API
 	    		  Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
 	
@@ -161,10 +170,49 @@ public class MainActivity extends Activity {
 	    		    @Override
 	    		    public void onCompleted(GraphUser user, Response response) {
 	    		    	if (user != null) {
-	    		    		  TextView welcome = (TextView) findViewById(R.id.welcome);
-	    		    		  welcome.setText("Hello " + user.getName() + "!");
-    		    		}
-	    		    }
+	    		    		TextView welcome = (TextView) findViewById(R.id.welcome);
+	    		    		welcome.setText("Hello " + user.getName() + "!");
+	    		    		  
+	    		    		final String userFacebookId = user.getId();
+
+		    				new AsyncTask<Void, Void, Bitmap>()
+		    				{
+	    		    			@Override
+	    		    			protected Bitmap doInBackground(Void... params)
+	    		    			{
+	    		    				if (userFacebookId == null){ return null; }
+
+	    		    				String url = String.format("https://graph.facebook.com/%s/picture", userFacebookId);
+
+	    		    				InputStream inputStream = null;
+									try {
+										inputStream = new URL(url).openStream();
+									} catch (MalformedURLException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+	    		    				Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+	    		    				return bitmap;
+	    		    			}
+
+	    		    			@Override
+	    		    			protected void onPostExecute(Bitmap bitmap)
+	    		    			{
+		    				      // safety check
+	    		    				if (bitmap != null && !isFinishing())
+	    		    				{
+	    		    					  // do what you need to do with the bitmap :)
+	    		    					ImageView profile_picture = (ImageView) findViewById(R.id.profile_picture);
+	    		    					profile_picture.setImageBitmap(bitmap);
+    		    			  		}
+	    		    			}
+	    		    			
+		    				}.execute();
+	    		    	}}
 	    		  });
         	  }
           }
