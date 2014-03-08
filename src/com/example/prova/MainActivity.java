@@ -3,6 +3,9 @@ package com.example.prova;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.facebook.*;
+import com.facebook.model.*;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
@@ -23,6 +26,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.TabHost;
+import android.content.Intent;
 
 import android.view.Window;
 import android.view.WindowManager;
@@ -119,6 +123,8 @@ public class MainActivity extends Activity {
 					factor = 100000.0;
 				}
 				
+				System.out.println("factor is: "+String.valueOf(factor));
+				
 				e.setFactor(factor);
 			}
 
@@ -139,6 +145,30 @@ public class MainActivity extends Activity {
         Timer myTimer = new Timer();
  
         myTimer.schedule(myTask, 1000, 5000);
+        
+        // start Facebook Login
+        Session.openActiveSession(this, true, new Session.StatusCallback() {
+        
+        // callback when session changes state
+        @SuppressWarnings("deprecation")
+		@Override
+          public void call(Session session, SessionState state, Exception exception) {
+        	  if (session.isOpened()) {
+        		  // make request to the /me API
+	    		  Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+	
+	    		    // callback after Graph API response with user object
+	    		    @Override
+	    		    public void onCompleted(GraphUser user, Response response) {
+	    		    	if (user != null) {
+	    		    		  TextView welcome = (TextView) findViewById(R.id.welcome);
+	    		    		  welcome.setText("Hello " + user.getName() + "!");
+    		    		}
+	    		    }
+	    		  });
+        	  }
+          }
+        });
 		
     }
 
@@ -220,6 +250,13 @@ public class MainActivity extends Activity {
     	// Register the listener with the Location Manager to receive location updates
     	service.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, networkListener);
     	service.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
+    }
+    
+    //facebook integration specific parts
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+      super.onActivityResult(requestCode, resultCode, data);
+      Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
     }
     
 }

@@ -38,6 +38,8 @@ public class ElisaPositioning {
 		
 		Date date = new Date();
 	    ElisaPositioning.net_time = date.getTime();
+	    
+	    updatePos();
 	}
 	
 	public static void setGpsPos(Location location)
@@ -53,7 +55,17 @@ public class ElisaPositioning {
 		Date date = new Date();
 	    ElisaPositioning.gps_time = date.getTime();
 	    
-	    System.out.println("("+String.valueOf(ElisaPositioning.gps_latitude)+","+String.valueOf(ElisaPositioning.gps_longitude)+","+String.valueOf(ElisaPositioning.gps_altitude)+")");
+	    updatePos();
+	}
+	
+	public static void printGpsPos()
+	{
+		System.out.println("("+String.valueOf(ElisaPositioning.gps_latitude)+","+String.valueOf(ElisaPositioning.gps_longitude)+","+String.valueOf(ElisaPositioning.gps_altitude)+")");
+	}
+	
+	public static void printNetPos()
+	{
+		System.out.println("("+String.valueOf(ElisaPositioning.net_latitude)+","+String.valueOf(ElisaPositioning.net_longitude)+","+String.valueOf(ElisaPositioning.net_altitude)+")");
 	}
 	
 	public static void updatePos()
