@@ -24,6 +24,9 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.TabHost;
 
+import android.view.Window;
+import android.view.WindowManager;
+
 public class MainActivity extends Activity {
 	
 	TabHost tabHost;
@@ -54,6 +57,12 @@ public class MainActivity extends Activity {
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_main);
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     	
@@ -64,9 +73,9 @@ public class MainActivity extends Activity {
         spec1.setContent(R.id.tab1);
         spec1.setIndicator("TAB 1");
         
-        TabSpec spec2=tabHost.newTabSpec("TAB 2");
+        TabSpec spec2=tabHost.newTabSpec("INFO");
         spec2.setContent(R.id.tab2);
-        spec2.setIndicator("TAB 2");
+        spec2.setIndicator("INFO");
         
         tabHost.addTab(spec1);
         tabHost.addTab(spec2);
