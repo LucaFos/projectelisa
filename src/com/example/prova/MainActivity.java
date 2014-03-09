@@ -123,17 +123,9 @@ public class MainActivity extends Activity {
 		skb.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
 			public void onStopTrackingTouch (SeekBar s) {
-				double factor = 0.0;
+				//System.out.println("factor is: "+String.valueOf(factor));
 				
-				if(ElisaPositioning.status==2){
-					factor = 0.0000001;
-				} else {
-					factor = 0.0001;
-				}
-				
-				System.out.println("factor is: "+String.valueOf(factor));
-				
-				e.setFactor(factor);
+				e.setFactor(ElisaPositioning.getFactor(s.getProgress()));
 			}
 
 			@Override
@@ -172,9 +164,15 @@ public class MainActivity extends Activity {
 	    		    	if (user != null) {
 	    		    		TextView welcome = (TextView) findViewById(R.id.welcome);
 	    		    		welcome.setText("Hello " + user.getName() + "!");
-	    		    		  
+	    		    		
 	    		    		final String userFacebookId = user.getId();
-
+	    		    		
+	    		    		//loading user data in specific Elisa class
+	    		    		ElisaUser.name = user.getName();
+	    		    		ElisaUser.username = user.getUsername();
+	    		    		ElisaUser.id = user.getId();
+	    		    		
+	    		    		
 		    				new AsyncTask<Void, Void, Bitmap>()
 		    				{
 	    		    			@Override

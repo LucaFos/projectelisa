@@ -46,7 +46,7 @@ public class ElisaPostMessage extends AsyncTask<Void, Integer, Integer>
 		
 	    URL url = null;
 		try {
-			url = new URL("http://" + target + "/main/post/?x="+String.valueOf(x)+"&y="+String.valueOf(y)+"&z="+String.valueOf(z));
+			url = new URL("http://" + target + "/main/post/?x="+String.valueOf(x)+"&y="+String.valueOf(y)+"&z="+String.valueOf(z)+"&owner="+ElisaUser.id);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
