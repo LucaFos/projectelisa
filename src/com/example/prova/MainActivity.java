@@ -247,9 +247,13 @@ public class MainActivity extends Activity {
                 TextView t = (TextView)getLayoutInflater().inflate(R.layout.message_layout, null);
                 t.setText(ElisaConnector.last_messages.get(i).getBody());
                 
+                //Button button = (Button) findViewById(R.layout.buttons_layout);
+                LinearLayout buttons = (LinearLayout)getLayoutInflater().inflate(R.layout.buttons_layout, null);
+                
                 TextView divisor = (TextView)getLayoutInflater().inflate(R.layout.divisor_layout, null);
                 
                 ll.addView(t);
+                ll.addView(buttons);
                 ll.addView(divisor);
         }
     }

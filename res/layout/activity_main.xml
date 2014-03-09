@@ -78,7 +78,7 @@
 		        android:layout_height="match_parent"
 		        android:layout_above="@+id/textView3"
 		        android:layout_alignParentLeft="true" >
-		
+		        
 		        <LinearLayout
 		            android:id="@+id/messageLinearLayout"
 		            android:layout_width="match_parent"
@@ -87,6 +87,12 @@
 		            android:dividerHeight="16.0dp"
 		            android:orientation="vertical"
 		            android:padding="5dip" >
+				
+			        <ProgressBar
+				         android:layout_width="wrap_content"
+				         android:layout_height="wrap_content"
+				         style="@android:style/Widget.ProgressBar.Small"
+				         android:layout_marginRight="5dp" />
 		            
 		        </LinearLayout>
 		    </ScrollView>
@@ -111,13 +117,15 @@
 			        android:id="@+id/welcome"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
+			        android:layout_marginTop="40dp"
 			        android:text="loading..."
-			        android:textAppearance="?android:attr/textAppearanceMedium" />
+			        android:textAppearance="?android:attr/textAppearanceLarge" />
 	
 			    <ImageView
 			        android:id="@+id/profile_picture"
 			        android:layout_width="80dp"
-			        android:layout_height="80dp" />
+			        android:layout_height="80dp"
+			        android:layout_marginTop="25dp" />
 		    </LinearLayout>
 		    
 		</RelativeLayout>
