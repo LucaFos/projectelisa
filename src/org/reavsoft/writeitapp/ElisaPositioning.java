@@ -1,4 +1,4 @@
-package com.example.prova;
+package org.reavsoft.writeitapp;
 
 import java.util.Date;
 

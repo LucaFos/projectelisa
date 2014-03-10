@@ -1,4 +1,4 @@
-package com.example.prova;
+package org.reavsoft.writeitapp;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -61,11 +61,12 @@ public class ElisaGetMessages extends AsyncTask<Void, Integer, String>
 						JSONObject obj = jarr.getJSONObject(i);
 						
 						String body = obj.getString("body");
+						String owner = obj.getString("owner");
 						double latitude = Double.parseDouble(obj.getString("x"));
 						double longitude = Double.parseDouble(obj.getString("y"));
 						double altitude = Double.parseDouble(obj.getString("z"));
 						
-						messages.add(new ElisaMessage(body, latitude, longitude, altitude, -1));
+						messages.add(new ElisaMessage(body, latitude, longitude, altitude, owner));
 					}
 					
 					

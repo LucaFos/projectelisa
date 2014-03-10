@@ -1,4 +1,4 @@
-package com.example.prova;
+package org.reavsoft.writeitapp;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
+import org.reavsoft.writeitapp.R;
 
 import com.facebook.*;
 import com.facebook.model.*;
@@ -96,7 +97,6 @@ public class MainActivity extends Activity {
             @Override
             public void handleMessage (Message msg) {
             	//TODO: differentiate between messages
-            	System.out.println("message received?");
                 refreshMessages();
             }
         };
@@ -245,12 +245,16 @@ public class MainActivity extends Activity {
                 TextView t = (TextView)getLayoutInflater().inflate(R.layout.message_layout, null);
                 t.setText(ElisaConnector.last_messages.get(i).getBody());
                 
+                TextView author = (TextView)getLayoutInflater().inflate(R.layout.author_layout, null);
+                author.setText("   written by "+ElisaConnector.last_messages.get(i).getAuthor());
+                
                 //Button button = (Button) findViewById(R.layout.buttons_layout);
                 LinearLayout buttons = (LinearLayout)getLayoutInflater().inflate(R.layout.buttons_layout, null);
                 
                 TextView divisor = (TextView)getLayoutInflater().inflate(R.layout.divisor_layout, null);
                 
                 ll.addView(t);
+                ll.addView(author);
                 ll.addView(buttons);
                 ll.addView(divisor);
         }

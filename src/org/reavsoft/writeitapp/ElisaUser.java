@@ -1,4 +1,4 @@
-package com.example.prova;
+package org.reavsoft.writeitapp;
 
 public class ElisaUser {
 	public static String name = null;
