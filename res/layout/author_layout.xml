@@ -3,6 +3,9 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="6sp" >
+        android:background="#FFFFFF"
+        android:layout_marginLeft="4dp"
+        android:textColor="#BABABA"
+        android:textSize="12sp">
         
 </TextView>

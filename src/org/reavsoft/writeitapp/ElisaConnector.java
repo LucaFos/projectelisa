@@ -1,5 +1,5 @@
 
-package com.example.prova;
+package org.reavsoft.writeitapp;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

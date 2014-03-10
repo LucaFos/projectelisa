@@ -1,4 +1,4 @@
-package com.example.prova;
+package org.reavsoft.writeitapp;
 
 import java.util.Date;
 
@@ -21,6 +21,8 @@ public class ElisaPositioning {
 	private static long net_time = 0;
 	private static long gps_time = 0;
 	
+	private static double factor = 0.00004;
+	
 	/*
 	 * 1: NETWORK
 	 * 2: GPS
@@ -40,6 +42,7 @@ public class ElisaPositioning {
 	    ElisaPositioning.net_time = date.getTime();
 	    
 	    updatePos();
+	    updateFac();
 	}
 	
 	public static void setGpsPos(Location location)
@@ -56,6 +59,21 @@ public class ElisaPositioning {
 	    ElisaPositioning.gps_time = date.getTime();
 	    
 	    updatePos();
+	    updateFac();
+	}
+	
+	public static void updateFac()
+	{
+		if(ElisaPositioning.status==2){
+			ElisaPositioning.factor = 0.000001;
+		} else {
+			ElisaPositioning.factor = 0.00001;
+		}
+	}
+	
+	public static double getFactor(int value)
+	{
+		return (value+1)*ElisaPositioning.factor;
 	}
 	
 	public static void printGpsPos()

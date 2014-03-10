@@ -1,14 +1,14 @@
-package com.example.prova;
+package org.reavsoft.writeitapp;
 
 public class ElisaMessage {
 	String m_body;
-	int m_owner;
+	String m_owner;
 	double m_x, m_y, m_z; //latitude, longitude, altitude
 	
 	/*
 	 * Creates a good elisa message object setting all params
 	 */
-	ElisaMessage(String body, double latitude, double longitude, double altitude, int owner)
+	ElisaMessage(String body, double latitude, double longitude, double altitude, String owner)
 	{
 		m_owner = owner;
 		m_x = latitude;
@@ -66,6 +66,14 @@ public class ElisaMessage {
 	public double getAltitude()
 	{
 		return m_z;
+	}
+
+	public void setAuthor(String s) {
+		m_owner = s;
+	}
+	
+	public String getAuthor() {
+		return m_owner;
 	}
 
 }
