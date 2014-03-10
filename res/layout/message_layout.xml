@@ -4,6 +4,6 @@
         android:layout_height="wrap_content"
         android:padding="6dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:background="@drawable/rounded_corner">
+        android:background="#FFFFFF">
         
 </TextView>

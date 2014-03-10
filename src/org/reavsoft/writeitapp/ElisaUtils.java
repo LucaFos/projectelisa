@@ -1,4 +1,4 @@
-package com.example.prova;
+package org.reavsoft.writeitapp;
 
 public class ElisaUtils {
 	static String convertStreamToString(java.io.InputStream is) {
